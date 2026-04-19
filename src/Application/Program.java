@@ -14,5 +14,9 @@ public class Program {
       System.out.println("Board rows: " + board.getRows());
 
       ChessMatch chessMatch= new ChessMatch();
-      
+      UI.printBoard(chessMatch.getPieces());
+      board.placePiece(chessMatch.getPieces()[0][4], new Position(0, 4));
+      System.out.println(board.piece(0, 4));
+
+
 }}
