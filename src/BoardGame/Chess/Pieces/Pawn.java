@@ -30,7 +30,7 @@ public class Pawn extends ChessPiece{
 				mat[p.getRow()][p.getColumn()] = true;
 			}
 			p.setValues(position.getRow() - 1, position.getColumn() - 1);
-			if (getBoard().positionExists(p) && isThereOpponentPiece(p)) {
+			if (getBoard().positionExists(p) && isThereOpponentPiece(p)) {//Verificar se existe uma peça adversária na posição diagonal esquerda
 				mat[p.getRow()][p.getColumn()] = true;
 			}			
 			p.setValues(position.getRow() - 1, position.getColumn() + 1);

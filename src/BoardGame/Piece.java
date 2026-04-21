@@ -1,6 +1,6 @@
 package BoardGame;
 
-public abstract class Piece {
+public abstract class Piece {//Classe abstrata, não pode ser instanciada, só pode ser herdada
     
     protected Position position;
     private Board board;
@@ -14,7 +14,7 @@ public abstract class Piece {
         return board;
     }
 
-    public abstract boolean[][] possibleMoves();
+    public abstract boolean[][] possibleMoves();//Matriz de booleanos para indicar as posições possíveis de movimento	
 	
 	public boolean possibleMove(Position position) {
 		return possibleMoves()[position.getRow()][position.getColumn()];

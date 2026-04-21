@@ -128,7 +128,7 @@ public class ChessMatch {
 			return promoted;
 		}
 		
-		Position pos = promoted.getChessPosition().toPosition();
+		Position pos = promoted.getChessPosition().toPosition();//Obter a posição da peça promovida para remover a peça antiga e colocar a nova peça no tabuleiro
 		Piece p = board.removePiece(pos);
 		piecesOnTheBoard.remove(p);
 		
@@ -177,17 +177,15 @@ public class ChessMatch {
 		
 		// #specialmove en passant
 		if (p instanceof Pawn) {
-			if (source.getColumn() != target.getColumn() && capturedPiece == null) {
+			if (source.getColumn() != target.getColumn() && capturedPiece == null) {//Se a posição de origem e destino forem diferentes e não houver peça capturada, é um movimento en passant
 				Position pawnPosition;
 				if (p.getColor() == Color.WHITE) {
-					pawnPosition = new Position(target.getRow() + 1, target.getColumn());
+					pawnPosition = new Position(3, target.getColumn());
 				}
 				else {
-					pawnPosition = new Position(target.getRow() - 1, target.getColumn());
+					pawnPosition = new Position(4, target.getColumn());
 				}
-				capturedPiece = board.removePiece(pawnPosition);
-				capturedPieces.add(capturedPiece);
-				piecesOnTheBoard.remove(capturedPiece);
+				board.placePiece(capturedPiece, pawnPosition);
 			}
 		}
 		
@@ -196,7 +194,7 @@ public class ChessMatch {
 	
 	private void undoMove(Position source, Position target, Piece capturedPiece) {
 		ChessPiece p = (ChessPiece)board.removePiece(target);
-		p.decreaseMoveCount();
+		p.decreaseMoveCount();//Voltar a contagem de movimentos da peça para o valor anterior
 		board.placePiece(p, source);
 		
 		if (capturedPiece != null) {
@@ -210,7 +208,7 @@ public class ChessMatch {
 			Position sourceT = new Position(source.getRow(), source.getColumn() + 3);
 			Position targetT = new Position(source.getRow(), source.getColumn() + 1);
 			ChessPiece rook = (ChessPiece)board.removePiece(targetT);
-			board.placePiece(rook, sourceT);
+			board.placePiece(rook, sourceT);//Voltar a torre para a posição original
 			rook.decreaseMoveCount();
 		}
 

@@ -1,6 +1,8 @@
 package Application;
 
+import java.util.ArrayList;
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 
 import BoardGame.Chess.ChessException;
@@ -13,20 +15,42 @@ public class Program {
       Scanner sc = new Scanner(System.in);
     ChessMatch chessMatch = new ChessMatch();
 
-    while(true){
+    List<ChessPiece> captured = new ArrayList<>();
+
+    while(!chessMatch.getCheckMate()){
       try{
       UI.clearScreen();
-      UI.printBoard(chessMatch.getPieces());
+      UI.printMatch(chessMatch,captured);
       System.out.println();
       System.out.print("Source: ");
       ChessPosition sourse=UI.readChessPosition(sc);
 
+      boolean[][] possibleMoves = chessMatch.possibleMoves(sourse);
+      UI.clearScreen();
+
+      UI.printBoard(chessMatch.getPieces(), possibleMoves);
 
       System.out.println();
       System.out.println("Target:");
       ChessPosition target= UI.readChessPosition(sc);
 
       ChessPiece capturedPiece= chessMatch.performChessMove(sourse, target);
+       
+      if(capturedPiece!=null){
+        captured.add(capturedPiece);
+
+      }
+      if (chessMatch.getPromoted() !=null) {
+        System.out.print("Enter piece for promotion (B/N/R/Q): ");
+        String type = sc.nextLine().toUpperCase();
+        		while (!type.equals("B") && !type.equals("N") && !type.equals("R") && !type.equals("Q")) {
+              System.out.print("Enter piece for promotion (B/N/R/Q): ");
+             type = sc.nextLine().toUpperCase();
+          
+        }
+        chessMatch.replacePromotedPiece(type);
+      }
+      captured.removeIf(x->x==chessMatch.getEnPassantVulnerable());
       }
       catch(ChessException e){
         System.out.println(e.getMessage());
@@ -36,8 +60,10 @@ public class Program {
         System.out.println(e.getMessage());
         sc.nextLine();
       }
-
-
 }
+UI.clearScreen();
+UI.printMatch(chessMatch, captured);
+
+
 
 }}
